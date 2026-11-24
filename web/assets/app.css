@@ -1,0 +1,77 @@
+/* Layout for this tool only. The shared kit supplies everything else. */
+
+.tabs { margin: 22px 0 0; }
+.tabpanel { padding-top: 4px; }
+
+h3 { font-size: .92rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 22px 0 10px; }
+h3:first-of-type { margin-top: 14px; }
+
+.lede-small { margin: 0 0 16px; font-size: .92rem; color: var(--ink-2); max-width: 60ch; }
+.band-hint { margin: -4px 0 0; font-size: .8rem; color: var(--ink-3); }
+
+textarea {
+  width: 100%; font-family: var(--mono); font-size: .82rem; line-height: 1.5;
+  padding: 10px 12px; border-radius: 9px; border: 1px solid var(--line-2);
+  background: var(--surface); color: var(--ink); resize: vertical;
+}
+textarea:focus { outline: 2px solid var(--tool); outline-offset: 1px; border-color: var(--tool); }
+
+.checks { display: flex; flex-wrap: wrap; gap: 14px; }
+.checks label { display: flex; align-items: center; gap: 7px; font-size: .9rem; color: var(--ink-2); }
+.checks input { accent-color: var(--tool); width: 16px; height: 16px; }
+
+.verdict { border-radius: var(--radius); padding: 16px 18px; margin: 0 0 16px; border: 1px solid var(--line); }
+.verdict .v { font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; }
+.verdict p { margin: 6px 0 0; font-size: .9rem; }
+.verdict.good { background: color-mix(in srgb, var(--ok) 10%, var(--surface)); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+.verdict.good .v { color: var(--ok); }
+.verdict.bad { background: color-mix(in srgb, var(--bad) 9%, var(--surface)); border-color: color-mix(in srgb, var(--bad) 40%, var(--line)); }
+.verdict.bad .v { color: var(--bad); }
+.verdict.unknown { background: var(--surface-2); }
+.verdict.unknown .v { color: var(--warn); }
+
+.problems, .warnings { margin: 0 0 14px; padding-left: 20px; font-size: .88rem; }
+.problems li { color: var(--bad); margin-bottom: 6px; }
+.warnings li { color: var(--warn); margin-bottom: 6px; }
+
+.checklist { list-style: none; padding: 0; margin: 10px 0 0; }
+.checklist li { border-left: 3px solid var(--tool); padding: 2px 0 2px 12px; margin: 0 0 14px; }
+.checklist .do { display: block; font-weight: 600; font-size: .92rem; }
+.checklist .why { display: block; font-size: .84rem; color: var(--ink-3); margin-top: 3px; }
+
+.limits { list-style: none; padding: 0; margin: 8px 0 0; font-size: .84rem; color: var(--ink-3); }
+.limits li { border-top: 1px solid var(--line); padding: 9px 0; }
+
+.code { font-family: var(--mono); font-size: .76rem; line-height: 1.6; word-break: break-all; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.keyout { font-family: var(--mono); font-size: .78rem; word-break: break-all; }
+
+.symbol { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 4px 0 14px; }
+.symbol img { width: 100%; max-width: 280px; height: auto; image-rendering: pixelated; background: #fff; padding: 6px; border-radius: 8px; border: 1px solid var(--line); }
+.symbol .caption { font-size: .78rem; color: var(--ink-3); text-align: center; }
+
+.tablewrap { overflow-x: auto; }
+.facts { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 0 0 14px; }
+.facts th { text-align: left; font-weight: 600; color: var(--ink-3); padding: 6px 10px 6px 0; vertical-align: top; width: 42%; }
+.facts td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+
+/* The printable tag. Off screen until the print dialogue opens. */
+.tagsheet { display: none; }
+.tagsheet .tag { border: 1px solid #000; padding: 10mm; max-width: 120mm; }
+.tagsheet img { width: 45mm; height: 45mm; image-rendering: pixelated; }
+.tagsheet h2 { margin: 0 0 2mm; font-size: 12pt; }
+.tagsheet dl { margin: 3mm 0 0; font-size: 8pt; }
+.tagsheet dt { font-weight: 700; }
+.tagsheet dd { margin: 0 0 1.5mm; }
+.tagsheet .codeblock { font-family: var(--mono); font-size: 6.5pt; word-break: break-all; margin-top: 3mm; }
+.tagsheet .how { font-size: 7pt; margin-top: 3mm; }
+
+@media print {
+  .topbar, .hero, .tabs, main, .foot { display: none !important; }
+  .tagsheet { display: block !important; }
+  .tagsheet[hidden] { display: none !important; }
+  body { background: #fff; color: #000; }
+}
+
+@media (min-width: 860px) {
+  .cols.calc { grid-template-columns: 1.15fr .85fr; }
+}

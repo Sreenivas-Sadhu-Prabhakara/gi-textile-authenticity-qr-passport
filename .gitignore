@@ -1,0 +1,15 @@
+# the built binary
+/gi-textile-passport
+/gi-textile-authenticity-qr-passport
+
+# the register, which holds a cluster's own passports
+*-data.json
+/gi-textile-passport-data.json
+
+# signing keys, which must never be committed
+*.key
+*.pem
+
+# editor and operating-system leftovers
+.DS_Store
+*.swp

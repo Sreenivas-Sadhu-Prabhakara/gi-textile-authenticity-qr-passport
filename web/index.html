@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'; connect-src 'self'">
+<title>GI textile authenticity passport · Open MSME</title>
+<meta name="description" content="Issue a signed provenance passport for each woven piece, print it as a scannable symbol, and let a buyer holding the cloth check it offline against the cluster's published key.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script src="assets/theme-init.js"></script>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/accent.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <span class="brand"><span class="dot"></span> GI textile passport <span class="tag">Open MSME</span></span>
+    <span class="sp"></span>
+    <span class="pill" id="register-count">register —</span>
+    <button class="themer" type="button" data-themer>Theme</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <h1>GI textile authenticity passport for a woven piece</h1>
+    <p class="lede">Record what came off the loom, sign it with the cluster's own key, and print the passport as a symbol a buyer can check while holding the cloth — with no network, and no server to ask.</p>
+  </section>
+
+  <nav class="seg tabs" aria-label="Sections">
+    <button type="button" data-tab="issue" aria-pressed="true">Issue a passport</button>
+    <button type="button" data-tab="verify" aria-pressed="false">Check a passport</button>
+    <button type="button" data-tab="register" aria-pressed="false">The register</button>
+    <button type="button" data-tab="keys" aria-pressed="false">Cluster key</button>
+  </nav>
+
+  <!-- ISSUE -->
+  <div class="cols calc tabpanel" id="tab-issue">
+    <section class="card">
+      <h2>The piece</h2>
+      <form id="issue-form" autocomplete="off">
+        <div class="row2">
+          <div class="field">
+            <label for="serial">Piece serial <span class="hint">your register's number</span></label>
+            <div class="inp"><input type="text" id="serial" name="serial" maxlength="24" required></div>
+          </div>
+          <div class="field">
+            <label for="offLoomDate">Date off the loom</label>
+            <div class="inp"><input type="text" id="offLoomDate" name="offLoomDate" placeholder="YYYY-MM-DD" maxlength="10" required></div>
+          </div>
+        </div>
+
+        <h3>The geographical indication</h3>
+        <div class="row2">
+          <div class="field">
+            <label for="giName">Geographical indication</label>
+            <div class="inp"><input type="text" id="giName" name="giName" maxlength="40" required></div>
+          </div>
+          <div class="field">
+            <label for="giRegistrationNo">Registration number <span class="hint">yours to supply</span></label>
+            <div class="inp"><input type="text" id="giRegistrationNo" name="giRegistrationNo" maxlength="40" required></div>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="role">Your standing on the register</label>
+            <select id="role" name="role" required></select>
+          </div>
+          <div class="field">
+            <label for="registerEntryNo">Your entry number</label>
+            <div class="inp"><input type="text" id="registerEntryNo" name="registerEntryNo" maxlength="24" required></div>
+          </div>
+        </div>
+
+        <h3>Who wove it</h3>
+        <div class="field">
+          <label for="cluster">Cluster, society or co-operative</label>
+          <div class="inp"><input type="text" id="cluster" name="cluster" maxlength="48" required></div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="weaverName">Weaver</label>
+            <div class="inp"><input type="text" id="weaverName" name="weaverName" maxlength="48" required></div>
+          </div>
+          <div class="field">
+            <label for="weaverId">Weaver identifier</label>
+            <div class="inp"><input type="text" id="weaverId" name="weaverId" maxlength="24" required></div>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="loomNo">Loom number</label>
+            <div class="inp"><input type="text" id="loomNo" name="loomNo" maxlength="16" required></div>
+          </div>
+          <div class="field">
+            <label for="loomType">Loom type</label>
+            <select id="loomType" name="loomType" required></select>
+          </div>
+        </div>
+
+        <h3>The cloth</h3>
+        <div class="row2">
+          <div class="field">
+            <label for="article">Article</label>
+            <select id="article" name="article" required></select>
+          </div>
+          <div class="field">
+            <label for="zari">Zari</label>
+            <select id="zari" name="zari" required></select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="warpFibre">Warp fibre</label>
+            <select id="warpFibre" name="warpFibre" required></select>
+          </div>
+          <div class="field">
+            <label for="weftFibre">Weft fibre</label>
+            <select id="weftFibre" name="weftFibre" required></select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="lengthCm">Length off the loom <span class="hint">cm</span></label>
+            <div class="inp has-suf"><input type="number" id="lengthCm" name="lengthCm" min="10" max="10000" required><span class="suf">cm</span></div>
+          </div>
+          <div class="field">
+            <label for="widthCm">Width off the loom <span class="hint">cm</span></label>
+            <div class="inp has-suf"><input type="number" id="widthCm" name="widthCm" min="5" max="300" required><span class="suf">cm</span></div>
+          </div>
+        </div>
+        <p class="band-hint" id="band-hint"></p>
+
+        <h3>Claims and binding</h3>
+        <div class="field">
+          <label>Certification marks claimed <span class="hint">the mark is granted by its own authority, not by this tool</span></label>
+          <div id="marks" class="checks"></div>
+        </div>
+        <div class="field">
+          <label for="binding">How the passport is fastened to this piece</label>
+          <select id="binding" name="binding" required></select>
+          <p class="hint" id="binding-hint"></p>
+        </div>
+
+        <div class="field" id="key-field">
+          <label for="privateKey">Cluster signing key <span class="hint">pasted here, used once, stored nowhere</span></label>
+          <textarea id="privateKey" name="privateKey" rows="2" spellcheck="false"></textarea>
+        </div>
+
+        <div class="btnrow">
+          <button class="btn primary" type="submit">Sign and file this passport</button>
+          <button class="btn ghost" type="button" id="check-btn">Check it first</button>
+          <button class="btn ghost" type="button" id="sample-btn">Fill in an example</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card sticky" id="issue-result">
+      <h2>The passport</h2>
+      <p class="note">Nothing has been signed yet. Fill the form in and check it.</p>
+    </section>
+  </div>
+
+  <!-- VERIFY -->
+  <div class="cols calc tabpanel" id="tab-verify" hidden>
+    <section class="card">
+      <h2>Check a passport</h2>
+      <p class="lede-small">Scan the symbol on the tag, or type the code off it. Then paste the cluster's published key — the one on its noticeboard or its letterhead, not one that came with the cloth.</p>
+      <div class="field">
+        <label for="verify-code">The passport code</label>
+        <textarea id="verify-code" rows="5" spellcheck="false" placeholder="GITP1: ..."></textarea>
+      </div>
+      <div class="field">
+        <label for="verify-key">The cluster's published public key</label>
+        <textarea id="verify-key" rows="2" spellcheck="false"></textarea>
+        <p class="hint" id="verify-key-hint"></p>
+      </div>
+      <div class="btnrow">
+        <button class="btn primary" type="button" id="verify-btn">Check it</button>
+        <button class="btn ghost" type="button" id="verify-clear">Clear</button>
+      </div>
+    </section>
+    <section class="card" id="verify-result">
+      <h2>What the check says</h2>
+      <p class="note">Paste a code and the cluster's key.</p>
+    </section>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="tabpanel" id="tab-register" hidden>
+    <section class="card">
+      <h2>The register</h2>
+      <p class="lede-small">Every passport this machine has issued. This is what a cluster reads from when a buyer rings to ask about a serial.</p>
+      <div class="btnrow">
+        <a class="btn ghost" id="csv-link" href="/api/register?format=csv" download>Export as a spreadsheet</a>
+      </div>
+      <div class="tablewrap">
+        <table class="breakdown" id="register-table">
+          <thead><tr><th>Issued</th><th>Serial</th><th>Piece</th><th>Weaver</th><th>Loom</th><th class="num">Size</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note" id="register-empty">No passports have been issued on this machine yet.</p>
+    </section>
+  </div>
+
+  <!-- KEYS -->
+  <div class="tabpanel" id="tab-keys" hidden>
+    <section class="card">
+      <h2>The cluster's signing key</h2>
+      <p class="lede-small">One key for the cluster, not one per piece. The public half is published so buyers can check passports; the private half signs them and never leaves the cluster.</p>
+      <div class="btnrow">
+        <button class="btn primary" type="button" id="newkey-btn">Generate a new cluster key</button>
+      </div>
+      <div id="key-result"></div>
+      <div class="note">
+        <p>This tool never writes a private key to its register file. Start it with <code>-key /path/to/cluster.key</code> to have it read the key from a file you control, or paste the key in when you issue a passport.</p>
+        <p>Generating a new key does not revoke the old one. Passports already issued verify only against the key that signed them, so keep the old public key published alongside the new one.</p>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<!-- The printable tag. Hidden on screen; it is what the printer gets. -->
+<div class="tagsheet" id="tagsheet" hidden></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Open MSME · free, offline tools for small businesses in India and the Philippines. MIT licensed.</span>
+    <span>Runs on this machine only. No telemetry, no outbound connection.</span>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'">
+<title>GI textile authenticity QR passport · Open MSME</title>
+<meta name="description" content="A free, offline tool for GI-registered weaver clusters: sign a provenance passport for each woven piece, print it as a real scannable QR code, and let a buyer holding the cloth check it against the cluster's published key with no network.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script src="assets/theme-init.js"></script>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/accent.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <span class="brand"><span class="dot"></span> GI textile passport <span class="tag">Open MSME</span></span>
+    <span class="sp"></span>
+    <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+    <button class="themer" type="button" data-themer>Theme</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">Textiles, apparel &amp; handloom · India &amp; Philippines</p>
+    <h1>GI textile authenticity QR passport for registered weaver clusters</h1>
+    <p class="lede">One passport per woven piece: the geographical indication and its registration number, the cluster, the weaver, the loom and its type, the warp and the weft, the measurements off the loom and the day it came off. Signed with the cluster's own key, printed as a QR code that carries the whole passport, and checked by a buyer holding the cloth — offline, against the key the cluster published, with no server to ask and nothing to subscribe to.</p>
+    <div class="who">
+      <span class="pill reg">GI Act, 1999 · ss. 17 and 21</span>
+      <span class="pill">Handloom Mark</span>
+      <span class="pill">Silk Mark</span>
+      <span class="pill">GI-registered clusters and authorised users</span>
+      <span class="pill">Offline, single binary</span>
+    </div>
+  </section>
+
+  <div class="cols">
+    <div class="prose">
+
+      <h2>What it does</h2>
+      <p>A powerloom copy of a Kanchipuram saree, a Pochampally ikat or a Banarasi brocade costs a fraction of the real thing and looks close enough across a shop counter. The weaver who spent three weeks at a handloom has no way to prove it, so the price collapses towards the copy's. This tool gives a registered cluster something to hand the buyer.</p>
+      <ul>
+        <li>Records one passport per piece: serial, geographical indication and registration number, the issuer's standing on the register and entry number, cluster, weaver and weaver identifier, loom number, loom type, article, warp and weft fibre, zari, length and width off the loom, the date off the loom, the certification marks claimed, and how the passport is fastened to the cloth.</li>
+        <li>Signs it with the cluster's Ed25519 key, over a canonical encoding that cannot be re-split into a different passport under the same signature.</li>
+        <li>Prints it as a real QR code — generated here, in Go, with no library and no web service — carrying the whole passport and its signature, so verification needs no network.</li>
+        <li>Checks a scanned or typed code against a public key the buyer supplies, and <strong>refuses to pass without one</strong>.</li>
+        <li>Turns a verified passport into a list of things to check against the cloth: measure it, look at the selvedge, look for the mark's own label, check the tag is stitched in and has not been unpicked.</li>
+        <li>Keeps the cluster's register in one local file and exports it as a spreadsheet, because the register is what a cluster reads from when a buyer rings about a serial.</li>
+      </ul>
+
+      <h2>Who it's for</h2>
+      <p>Weaver clusters, co-operative societies and producer companies that are the registered proprietor of a geographical indication or a registered authorised user of one — in India, and in the Philippines since its own geographical indication register opened. It suits a society issuing anything from a dozen to a few thousand pieces a year, printing tags on an ordinary printer, with nobody on staff to run a server.</p>
+      <p>It is equally for the buyer. The checking side needs nothing but the binary and the cluster's published key: no account, no app, no connection.</p>
+
+      <h2>The rule it implements</h2>
+      <p>A <strong>geographical indication</strong> is not a brand anyone may use. Under the <strong>Geographical Indications of Goods (Registration and Protection) Act, 1999</strong>, a registered geographical indication may be used only by its <strong>registered proprietor</strong> and by <strong>registered authorised users</strong> — section 21 confers the exclusive right, and section 17 is how a producer becomes an authorised user. Everyone else using it is infringing. So the first thing a passport records is which of the two the issuer is, and under which entry on the register.</p>
+      <p>In the <strong>Philippines</strong>, geographical indications are protected under the <strong>Intellectual Property Code (Republic Act No. 8293)</strong>, and a dedicated register was opened by the Intellectual Property Office of the Philippines under its <strong>Rules and Regulations on Geographical Indications</strong> in 2022. The same field set serves a T'nalak, Inabel or piña weave: the article, the fibres and the loom type are recorded in the same way, with abaca and piña among the fibres.</p>
+      <p>Two certification marks sit alongside the geographical indication, and this tool treats them as claims rather than facts:</p>
+      <ul>
+        <li>The <strong>Handloom Mark</strong>, of the Ministry of Textiles and administered through the Textiles Committee, certifies that cloth was <em>woven by hand</em>. A passport that claims it while recording the piece as powerloom or mill-made contradicts itself, and this tool refuses to sign it.</li>
+        <li>The <strong>Silk Mark</strong>, of the Silk Mark Organisation of India under the Central Silk Board, certifies <em>natural silk</em>. A passport claiming it with no silk in either the warp or the weft is refused. A piece with silk on one side and cotton on the other draws a warning instead of a refusal, because the mark is for pure silk and whether a licence covers a blend is the cluster's business, not this tool's.</li>
+      </ul>
+      <p>Neither mark is granted by this tool, and neither can be checked by it. Each is a separately issued label with its own number; the verify screen says so and tells the buyer to look for the label on the piece.</p>
+      <p>The <strong>GI registration number is yours to supply</strong>. This tool ships no list of registered geographical indications, because it could not keep one current and could not verify one. It checks the number is present and not a placeholder, and the buyer's checklist says plainly that confirming it means asking the registry.</p>
+
+      <h2>Install &amp; run</h2>
+      <pre><code>git clone https://github.com/sreenivas-sadhu-prabhakara/gi-textile-authenticity-qr-passport.git
+cd gi-textile-authenticity-qr-passport
+go build -o gi-textile-passport .
+./gi-textile-passport
+
+# or without building first
+go run .
+
+# prove the QR generator works on this machine before printing 500 tags
+./gi-textile-passport -qr-selftest
+
+# your own register, and the cluster's key read from a file you control
+./gi-textile-passport -data ~/society/passports-2026.json -key ~/society/cluster.key
+
+# then open
+http://127.0.0.1:8080</code></pre>
+      <p>One binary, nothing to install, nothing to configure. The Go standard library only: <code>go.mod</code> has no dependencies at all. Copy the binary to the machine that keeps the register and run it there.</p>
+
+      <h2>The QR code is real, and generated here</h2>
+      <p>A tool with QR in its name should either produce a QR code or not claim one. This one implements the symbol itself, in Go, from the specification: Reed-Solomon error correction over GF(256), the block structure of all forty versions at all four error-correction levels, byte and alphanumeric encoding, module placement, the eight data masks and the scoring that picks between them, and the BCH-protected format and version information. It renders to PNG with the standard library, and it reads its own symbols back.</p>
+      <p>What that was held to:</p>
+      <ul>
+        <li>Every version from 1 to 40, at levels L, M, Q and H, in both implemented modes, with payloads filled exactly to capacity, was compared <strong>module for module against an independent QR Code implementation</strong> — 1,280 symbols, identical in every module, including the mask the scoring chose.</li>
+        <li>Rendered symbols were decoded by an <strong>off-the-shelf barcode scanner</strong> — the one behind an ordinary phone camera — at four pixels a module, across versions 1 to 40 and all four levels.</li>
+        <li>The published character capacities, the specification's worked Reed-Solomon example, the format and version information values and the per-version codeword totals are all pinned in the test suite. The codeword totals are <em>derived</em> from the module layout rather than transcribed, so the layout and the error-correction table check each other.</li>
+        <li><code>-qr-selftest</code> runs the whole loop on your machine: it builds a passport, renders it, reads the image back to a grid of modules and decodes it, recovering the error-correction level and the mask from the symbol itself.</li>
+      </ul>
+      <p>What is <em>not</em> implemented, stated plainly: numeric mode (a payload of digits encodes in alphanumeric mode, which is correct but a little larger), kanji mode, Micro QR, structured append, and error <em>correction</em> when reading — a block whose error-correction codewords do not match its data is reported as damaged rather than repaired, which is the only safe direction for a signed payload.</p>
+      <p>The QR carries the passport, not a web address. A link would mean a server to keep running, a domain to keep renewing and a buyer who needs a connection; a buyer in a market, or in ten years when the cluster's website has gone, can still check a self-contained code. A typical passport comes to a 637-character code in a version 16 symbol — 81 modules across, about 0.45 mm a module when printed 40 mm square, which wants 300 dpi or better. The tool tells you the size it produced and what to print it at.</p>
+
+      <h2>What it stores</h2>
+      <p>One JSON file, where you point <code>-data</code> and nowhere else: by default <code>./gi-textile-passport-data.json</code> in the folder you run it from. Each save replaces the file atomically through a temporary file and a rename, so an interrupted write leaves the previous register intact, and the file is written readable by its owner only.</p>
+      <p><strong>The signing key is never written to that file.</strong> A private key in a data file is a private key in every backup of that file. The tool takes the key from a file you point <code>-key</code> at, or from whoever is issuing, and holds it in memory only for as long as it is signing. A key generated in the interface is shown once and saved nowhere.</p>
+      <p>Nothing leaves the machine. There is no telemetry, no update check, and no outbound connection of any kind — not to a registry, not to a mark's authority, not anywhere. The tool listens on 127.0.0.1 unless you deliberately tell it otherwise, so nothing on the network can reach it either.</p>
+
+      <h2>How a piece moves through it</h2>
+      <ol class="steps">
+        <li>Generate one cluster key. Publish the public half — noticeboard, letterhead, the society's page, a sticker in the shop. Keep the private half where the society keeps its seal.</li>
+        <li>Enter the piece as it comes off the loom. The tool checks the record against its rules and tells you what does not add up before anything is signed.</li>
+        <li>Sign and file it. The passport goes into the register under its serial; the same serial twice is refused.</li>
+        <li>Print the tag: the QR code, the facts in words, the code in readable groups, and the cluster's public key.</li>
+        <li><strong>Sew the tag into the piece.</strong> This is the step the tool cannot do and the one everything rests on.</li>
+        <li>The buyer scans the code, pastes the cluster's published key, and gets a verdict plus a list of things to check against the cloth in their hands.</li>
+      </ol>
+
+      <h2>Features</h2>
+      <div class="featgrid">
+        <div class="feat">
+          <h3>Length-prefixed signed bytes</h3>
+          <p>Every field carries its own byte length, so no two different passports can share a signature by moving a character across a field boundary. Tested on every adjacent pair of fields.</p>
+        </div>
+        <div class="feat">
+          <h3>A check that cannot be self-satisfied</h3>
+          <p>Verification needs a key supplied separately, and refuses to pass without one — even for a genuine passport. A code always verifies against the key printed inside it, forged or not.</p>
+        </div>
+        <div class="feat">
+          <h3>A real QR encoder</h3>
+          <p>Versions 1 to 40, levels L to H, written from the specification and checked module for module against an independent implementation and against a real scanner.</p>
+        </div>
+        <div class="feat">
+          <h3>A code you can read aloud</h3>
+          <p>Upper case letters and the digits 2 to 7, in groups of eight. When the symbol is torn, the code can be typed in — and it packs into the symbol's efficient mode, which a base64 code would not.</p>
+        </div>
+        <div class="feat">
+          <h3>Claims that have to add up</h3>
+          <p>No Handloom Mark on a powerloom piece. No Silk Mark without silk. Measurements outside what the article comes in draw a question, not a refusal.</p>
+        </div>
+        <div class="feat">
+          <h3>A buyer's checklist</h3>
+          <p>Measure the piece against the passport. Look along the selvedge. Check the tag is stitched in. Ring the cluster and read them the serial. Confirm the registration number with the registry.</p>
+        </div>
+        <div class="feat">
+          <h3>Binding recorded, not assumed</h3>
+          <p>How the passport is fastened to the cloth is a required field, and "not bound" is an answer the verify screen repeats back in plain words.</p>
+        </div>
+        <div class="feat">
+          <h3>The register, exportable</h3>
+          <p>Every passport issued, with its code and signature, in one local file and as a spreadsheet with the coded fields written out in words.</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <p><strong>What a signature proves, and what it does not.</strong> A valid signature means exactly two things: the holder of that private key issued this passport, and not one character of it has changed since. That is all.</p>
+        <p><strong>It does not prove the cloth in the buyer's hands is the piece described.</strong> A passport is data. It can be photographed, copied and sewn onto a counterfeit piece, and every copy will verify perfectly, because every copy is the same bytes. The only thing that ties a passport to a particular piece of cloth is a <strong>physical binding</strong> — a tag stitched into that piece, or a mark woven into its selvedge — and that is the cluster's work to do and the buyer's to inspect. It is not something software can do. This tool records which binding was used and says so on the verify screen, including when the answer is none.</p>
+        <p>It does not prove the facts are true. The cluster typed them in. The weaver's name, the loom number and the fibres are the cluster's word, signed. A dishonest cluster can sign a dishonest passport, and this tool will confirm the signature.</p>
+        <p>It does not check the geographical indication register, the authorised-user entry, the Handloom Mark or the Silk Mark. Those live with their authorities, and this tool makes no connection to any of them. Confirm the registration number and the entry with the registry itself.</p>
+        <p>It cannot tell you whether the same passport has been printed once or a thousand times. Only the cluster's own register can answer that, by looking the serial up — which is why the checklist tells the buyer to ring and ask.</p>
+        <p>None of the figures below are statutory. No statute fixes the length of a saree. They are craft norms, stated here because the tool judges against them, and they only ever produce a warning you can issue over. Confirm the position on the Act, the registration and the certification marks with the authorities named above before relying on anything here.</p>
+      </div>
+
+      <details class="assumptions">
+        <summary>The figures this tool holds in one place</summary>
+        <ul>
+          <li><strong>Saree</strong> — 450 to 900 cm long, 100 to 135 cm wide. A six-yard saree runs about 550 cm and a nine-yard about 820 cm, with the blouse piece adding to the length.</li>
+          <li><strong>Dupatta</strong> — 200 to 300 cm by 60 to 120 cm. <strong>Stole</strong> — 150 to 220 cm by 35 to 80 cm. <strong>Shawl or blanket</strong> — 180 to 280 cm by 90 to 150 cm.</li>
+          <li><strong>Yardage</strong> — 90 to 5000 cm by 70 to 160 cm, measured as it is cut. <strong>Other</strong> — nothing is assumed.</li>
+          <li><strong>Absolute bounds</strong> — 10 to 10000 cm long and 5 to 300 cm wide. Outside these a measurement is refused rather than queried: it is not cloth.</li>
+          <li><strong>1950-01-01</strong> — the earliest date off the loom the tool will accept, as a guard against a mistyped year rather than a rule. A date in the future is refused outright.</li>
+          <li><strong>Ten years</strong> — a piece recorded as older than this draws a warning to check the year.</li>
+          <li><strong>Field limits</strong> — 24 characters for a serial, 40 for the geographical indication and its registration number, 48 for a cluster or weaver name, 24 for identifiers, 16 for a loom number. The limits exist so the whole passport always fits a printable symbol; the tool refuses a longer value rather than producing a symbol too dense to print.</li>
+          <li><strong>Ed25519</strong> — a 32-byte public key written as 43 characters, a 64-byte signature, from the Go standard library. The signed bytes are tagged <code>gitp/v1</code>, so a signature over a textile passport can never be read as a signature over anything else.</li>
+          <li><strong>Error-correction level M</strong> by default for the printed symbol, recovering about 15% damage. L, Q and H are available; a heavier level means a larger symbol for the same passport.</li>
+        </ul>
+      </details>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Open MSME · free, offline tools for small businesses in India and the Philippines. MIT licensed.</span>
+    <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a> · <a href="https://github.com/sreenivas-sadhu-prabhakara/gi-textile-authenticity-qr-passport">Source</a></span>
+  </div>
+</footer>
+
+<script src="assets/ui.js"></script>
+</body>
+</html>
